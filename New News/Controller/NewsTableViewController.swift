@@ -9,20 +9,39 @@ import UIKit
 import Kingfisher
 
 
+
 class NewsTableViewController: UITableViewController {
     
-    
-    
-
     var articles = [Article]()
+
+    
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchNews()
         tableView.tableFooterView = UIView()
+        tableView.separatorColor = .systemIndigo
         self.navigationItem.title = "NewNews"
+        
+        refreshControl = UIRefreshControl()
+        refreshControl!.attributedTitle = NSAttributedString(string: "Pull to refresh.")
+        refreshControl!.addTarget(self, action: #selector(refresh), for: .valueChanged)
+
      
     }
-    
+    //MARK: - Pull to refresh
+
+    @objc func refresh(sender:AnyObject)
+    {
+        
+
+        self.tableView.reloadData()
+        self.refreshControl?.endRefreshing()
+    }
+   
     
     
     //MARK: - Networking - JSON Decode
@@ -41,6 +60,7 @@ class NewsTableViewController: UITableViewController {
             let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
                 
                 guard let data = data else {return}
+                
                 
               
                 do {
@@ -65,44 +85,47 @@ class NewsTableViewController: UITableViewController {
         }
     
     //MARK: - TableViewMethods
-    func scrollToTop(){
-            let indexPath = IndexPath(row: 0, section: 0)
-            tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-        }
+    
+   
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
+       
         return articles.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as? NewsCell else { return UITableViewCell() }
-        cell.sizeToFit()
+        
         cell.newsTitle.text = articles[indexPath.row].title
-        cell.newsSource.text = "Source: \(articles[indexPath.row].source.name)"
+        if let sourceName = articles[indexPath.row].source?.name {
+            cell.newsSource.text = "Source: \(sourceName)"
+        }
+        
         if articles[indexPath.row].author == nil {
             cell.newsAuthor.text = "Author: Anonymous "
         } else {
             cell.newsAuthor.text = "Author: \(articles[indexPath.row].author!)"
         }
        
-            if let imageURL = URL(string: articles[indexPath.row].urlToImage) {
+        if let imageURL = URL(string: articles[indexPath.row].urlToImage!) {
         
                 DispatchQueue.main.async {
                     let processor = RoundCornerImageProcessor(cornerRadius: 75)
                     
+                     
                     cell.newsImage.kf.indicatorType = .activity
                     cell.newsImage.kf.setImage(with: imageURL, options: [.processor(processor)])
                     
                     }
              
             }
+        
                 return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let urlString = articles[indexPath.row].url
+        let urlString = articles[indexPath.row].url!
         
         if let url = URL(string: urlString){
             UIApplication.shared.open(url)
@@ -110,14 +133,21 @@ class NewsTableViewController: UITableViewController {
         }
     }
     
-    
-    
-
-    
-    
-    
-   
-
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        
+     let rotationTransform = CATransform3DTranslate(CATransform3DIdentity, 0, 100, 0)
+        cell.layer.transform = rotationTransform
+        cell.alpha = 0.2
+        
+        UIView.animate(withDuration: 0.75) {
+            cell.layer.transform = CATransform3DIdentity
+            cell.alpha = 1.0
+        }
+        
 }
-
-
+   
+    
+    
+ 
+}

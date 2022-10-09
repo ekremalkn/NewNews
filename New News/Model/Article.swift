@@ -16,11 +16,11 @@ class Articles: Codable {
 }
 class Article: Codable{
     let author: String?
-    let title: String
-    let description: String
-    let source: Source
-    let url: String
-    let urlToImage: String
+    let title: String?
+    let description: String?
+    let source: Source?
+    let url: String?
+    let urlToImage: String?
     
     
     init(author: String, title: String, description: String, source: Source, url: String, urlToImage: String){
