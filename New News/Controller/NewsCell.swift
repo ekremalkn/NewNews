@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 class NewsCell: UITableViewCell {
 
     @IBOutlet weak var newsAuthor: UILabel!

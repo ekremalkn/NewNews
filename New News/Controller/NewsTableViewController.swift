@@ -6,6 +6,7 @@
 //
 // NewsApi = a7f433d1e04c48658d8d805467db0878
 import UIKit
+import Kingfisher
 
 
 class NewsTableViewController: UITableViewController {
@@ -21,7 +22,9 @@ class NewsTableViewController: UITableViewController {
         self.navigationItem.title = "NewNews"
      
     }
-  
+    
+    
+    
     //MARK: - Networking - JSON Decode
 
         let newsURL = "https://newsapi.org/v2/everything?q=Apple&from=2022-10-07&sortBy=popularity&apiKey=a7f433d1e04c48658d8d805467db0878"
@@ -61,7 +64,12 @@ class NewsTableViewController: UITableViewController {
         
         }
     
-    
+    //MARK: - TableViewMethods
+    func scrollToTop(){
+            let indexPath = IndexPath(row: 0, section: 0)
+            tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        }
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return articles.count
@@ -78,29 +86,28 @@ class NewsTableViewController: UITableViewController {
             cell.newsAuthor.text = "Author: \(articles[indexPath.row].author!)"
         }
        
-        
-        
-        if articles[indexPath.row].urlToImage == nil {
-            cell.newsImage.image = UIImage(named: "nosign")
-            
-        } else {
             if let imageURL = URL(string: articles[indexPath.row].urlToImage) {
-                DispatchQueue.global().async {
-                    let data = try? Data(contentsOf: imageURL)
-                    if let data = data {
-                        let image = UIImage(data: data)
-                        DispatchQueue.main.async {
-                            cell.newsImage.image = image
-                        }
-                    }
-                }
-                
-               
-            }
-        }
         
-       
+                DispatchQueue.main.async {
+                    let processor = RoundCornerImageProcessor(cornerRadius: 75)
+                    
+                    cell.newsImage.kf.indicatorType = .activity
+                    cell.newsImage.kf.setImage(with: imageURL, options: [.processor(processor)])
+                    
+                    }
+             
+            }
                 return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let urlString = articles[indexPath.row].url
+        
+        if let url = URL(string: urlString){
+            UIApplication.shared.open(url)
+            
+        }
     }
     
     

@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -37,12 +38,13 @@
                         <navigationBar key="tableHeaderView" contentMode="scaleToFill" id="61H-g8-NdA">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.14901961389999999" green="0.2588235438" blue="0.27843138579999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <items>
                                 <navigationItem title="NewNews" id="TeF-UT-DP5"/>
                             </items>
                         </navigationBar>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewsCell" rowHeight="200" id="IkV-7I-QZV" customClass="NewsCell" customModule="New_News" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" tag="1" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewsCell" rowHeight="200" id="IkV-7I-QZV" customClass="NewsCell" customModule="New_News" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="88.5" width="414" height="200"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="IkV-7I-QZV" id="9Jn-Tg-nmv">
@@ -92,6 +94,7 @@
                                         <constraint firstItem="eG2-nX-hdh" firstAttribute="leading" secondItem="wfT-0t-rsu" secondAttribute="trailing" constant="10" id="zb0-3b-D5X"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" systemColor="systemYellowColor"/>
                                 <connections>
                                     <outlet property="newsAuthor" destination="7FD-Rr-y1U" id="BRm-06-s69"/>
                                     <outlet property="newsImage" destination="eG2-nX-hdh" id="Xdz-uC-hUd"/>
@@ -105,10 +108,29 @@
                             <outlet property="delegate" destination="HTe-mv-wSE" id="Qys-lJ-4yU"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <segue destination="Bkf-Ky-nQS" kind="show" id="RWT-xa-u6t"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1of-0g-ZFl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1582.608695652174" y="95.758928571428569"/>
+        </scene>
+        <!--Source View Controller-->
+        <scene sceneID="oQw-hL-wb2">
+            <objects>
+                <viewController id="Bkf-Ky-nQS" customClass="SourceViewController" customModule="New_News" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fXK-yP-5Ff">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="zn9-AB-52t"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Ty1-GY-QcX"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VNL-xU-ChR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2389" y="105"/>
         </scene>
     </scenes>
     <resources>
@@ -117,6 +139,9 @@
         </systemColor>
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
